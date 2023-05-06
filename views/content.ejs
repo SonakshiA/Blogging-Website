@@ -1,0 +1,35 @@
+<html lang="en">
+    <%- include("./partials/head.ejs") %>
+<body>
+    <%- include("./partials/nav.ejs") %> 
+    <div class="details content">
+        <h2><%= blog.title %></h2>
+        <div class="content">
+            <p><%= blog.body %></p>
+        </div>
+
+        <div class="options">
+            <a class="delete" data-doc="<%= blog._id %>">Delete</a>
+            <a class="update" data-doc="<%= blog._id %>" href="/blogs/create">Update</a>
+        </div>
+    
+    </div>
+
+    <script>
+        const trashcan = document.querySelector('a.delete');
+        const updateButton = document.querySelector('a.update');
+
+        trashcan.addEventListener('click',(e) => {
+            const endpoint = `/blogs/${trashcan.dataset.doc}`;
+
+
+            fetch(endpoint, {
+                method: 'DELETE'
+            })
+            .then((response) => response.json()) //returns another promise that passes response to another JS object that we can use
+            .then((data) => window.location.href = data.redirect) //property attached to data object
+            .catch(err => {console.log(err)})
+        })
+    </script>
+</body>
+</html>
